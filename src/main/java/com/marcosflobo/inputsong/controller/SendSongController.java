@@ -1,6 +1,6 @@
-package com.marcosflobo.sendsong.controller;
+package com.marcosflobo.inputsong.controller;
 
-import com.marcosflobo.sendsong.dto.RequestSong;
+import com.marcosflobo.inputsong.dto.RequestSong;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;

@@ -1,4 +1,4 @@
-package com.marcosflobo.sendsong.dto;
+package com.marcosflobo.inputsong.dto;
 
 
 import io.micronaut.serde.annotation.Serdeable;

@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller("/v1/send")
 public class SendSongController {
 
-
   @Post("/song")
   public HttpResponse<String> sendSong(@Body RequestSong song) {
 

@@ -13,13 +13,13 @@ TELEGRAM_TOKEN=foo TELEGRAM_BOTUSERNAME=@bar ./gradlew run
 == Send a song
 [source,shell]
 ----
-curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/3NvS0SxNWIPiAJoPWUpZzr?si=114a9c20ac3743f7"}' 'https://animated-meme-7wwp49w454frpv7-8080.app.github.dev/v1/send/song' -H 'Content-Type: application/json' -H 'authority: animated-meme-7wwp49w454frpv7-8080.app.github.dev'
+curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7U6WmHsakD?si=b7fb070b9b2441c3"}' 'https://animated-meme-7wwp49w454frpv7-8080.app.github.dev/v1/send/song' -H 'Content-Type: application/json' -H 'authority: animated-meme-7wwp49w454frpv7-8080.app.github.dev'
 ----
 
 In localhost
 [source,shell]
 ----
-curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/3NvS0SxNWIPiAJoPWUpZzr?si=114a9c20ac3743f7"}' 'http://localhost:8080/v1/send/song' -H 'Content-Type: application/json'
+curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7U6WmHsakD?si=b7fb070b9b2441c3"}' 'http://localhost:8080/v1/send/song' -H 'Content-Type: application/json'
 ----
 
 == Micronaut

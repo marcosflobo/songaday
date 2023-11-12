@@ -1,12 +1,11 @@
 package com.marcosflobo.telegrambot;
 
+import com.marcosflobo.sendsong.TelegramBotServiceUtils;
 import io.micronaut.context.annotation.Property;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -23,7 +22,11 @@ public class Bot extends TelegramLongPollingBot {
 
   private Long userId;
 
-  private String userFirstName;
+  private final TelegramBotServiceUtils telegramBotServiceUtils;
+
+  public Bot(TelegramBotServiceUtils telegramBotServiceUtils) {
+    this.telegramBotServiceUtils = telegramBotServiceUtils;
+  }
 
   @Override
   public String getBotUsername() {
@@ -39,51 +42,25 @@ public class Bot extends TelegramLongPollingBot {
   public void onUpdateReceived(Update update) {
     if (update.hasMessage() && update.getMessage().hasText()) {
       User user = update.getMessage().getFrom();
-      userFirstName = user.getFirstName();
+      String userFirstName = user.getFirstName();
       userId = user.getId();
       long chatId = update.getMessage().getChatId();
       String messageText = update.getMessage().getText();
 
       SendMessage message = new SendMessage();
       message.setChatId(chatId);
-      message.setText("¡Hola! "+userFirstName+" Has enviado el siguiente mensaje: " + messageText);
+      message.setText(
+          "¡Hola! " + userFirstName + " Has enviado el siguiente mensaje: " + messageText);
 
       try {
         execute(message);
       } catch (TelegramApiException e) {
-        e.printStackTrace();
+        log.error("Error at the time to send a message on onUpdateReceived. "
+                + "Update object: {} - "
+                + "Exception: {}",
+            update,
+            e.getMessage());
       }
-    }
-  }
-
-  public void sendAudio(String urlAudio) {
-
-    System.out.println("Building InputFile with URL " + urlAudio + "..");
-    InputFile audio = new InputFile(urlAudio);
-    System.out.println("InputFile built");
-
-    SendAudio message = SendAudio.builder()
-        .chatId(userId)
-        .audio(audio)
-        .caption("Four seaons")
-        .duration(198)
-        .title("Vivaldi_-_Four_Seasons_4_Winter_Air_Force_Strings")
-        .performer("Vivaldi")
-        .build();
-    System.out.println("SendAudio built");
-
-
-    sendToTelegram(message);
-  }
-
-  private void sendToTelegram(SendAudio message) {
-    try {
-      System.out.println("Sending to Telegram...");
-      execute(message);
-      System.out.println("Message sent!");
-    } catch (TelegramApiException e) {
-      System.out.println("Something happend and the message was not sent to Telegram");
-      System.out.println(e);
     }
   }
 
@@ -91,11 +68,14 @@ public class Bot extends TelegramLongPollingBot {
 
     SendMessage message = SendMessage.builder()
         .chatId(userId) //Who are we sending a message to
-        .text(what).build();    //Message content
+        .text(telegramBotServiceUtils.buildMessageSendSong(what))
+        .build();    //Message content
     try {
+      log.debug("Sending message to '{}'...", userId);
       execute(message);                        //Actually sending the message
-    } catch (TelegramApiException e) {
-      throw new RuntimeException(e);      //Any error will be printed here
+      log.info("Message sent to '{}'", userId);
+    } catch (TelegramApiException e) {      //Any error will be printed here
+      log.error("Error sending message to user '{}'. Exception: {}", userId, e.getMessage());
     }
   }
 

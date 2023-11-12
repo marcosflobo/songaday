@@ -1,0 +1,14 @@
+= Song A Day
+
+Telegram bot that sends you a daily song to make you day happy!
+
+== Run
+=== Via gradle
+
+[source,shell]
+----
+TELEGRAM_TOKEN=foo TELEGRAM_BOTUSERNAME=@bar ./gradlew run
+----
+
+== Micronaut
+- https://docs.micronaut.io/latest/guide/configurationreference.html

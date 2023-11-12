@@ -24,7 +24,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     // https://mvnrepository.com/artifact/org.telegram/telegrambots
-    implementation ("org.telegram:telegrambots:6.5.0")
+    implementation ("org.telegram:telegrambots:6.8.0")
 }
 
 

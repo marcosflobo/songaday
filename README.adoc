@@ -22,5 +22,34 @@ In localhost
 curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7U6WmHsakD?si=b7fb070b9b2441c3"}' 'http://localhost:8080/v1/send/song' -H 'Content-Type: application/json'
 ----
 
+== Build docker image & run
+=== Build docker image
+[source,shell]
+----
+CONTAINER=$(docker ps -a | grep -i songaday | awk '{print $1}')
+docker rm $CONTAINER
+docker image rm songaday
+docker build -t songaday:latest .
+----
+=== Remove existing container
+[source,shell]
+----
+CONTAINER=$(docker ps -a | grep -i songaday | awk '{print $1}')
+docker rm $CONTAINER
+----
+=== Run docker container with environment variables
+[source,shell]
+----
+docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 8080 --name mysongaday -it songaday
+----
+
+=== Publish docker image
+[source,shell]
+----
+docker image tag songaday marcosflobo/songaday:1.0.0
+docker image tag songaday marcosflobo/songaday:latest
+docker push --all-tags marcosflobo/songaday
+----
+
 == Micronaut
 - https://docs.micronaut.io/latest/guide/configurationreference.html

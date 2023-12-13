@@ -31,6 +31,29 @@ docker rm $CONTAINER
 docker image rm songaday
 docker build -t songaday:latest .
 ----
+=== Build docker image
+
+[source,shell]
+----
+CONTAINER=$(docker ps -a | grep -i songaday | awk '{print $1}')
+docker rm $CONTAINER
+docker image rm songaday
+#docker buildx build -t songaday:latest --platform linux/amd64,linux/armv7l .
+docker buildx build -t songaday:latest --platform linux/amd64,linux/armv7l .
+----
+In case you get an error like this
+[source,text]
+----
+ERROR: Multiple platforms feature is currently not supported for docker driver. Please switch to a different driver (eg. "docker buildx create --use")
+----
+
+Please, setup a builder for ARMv7l
+[source,shell]
+----
+docker buildx create --use --platform=inux/amd64,linux/amd64/v2,linux/amd64/v3,linux/386,linux/armv7l --name multi-platform-builder
+docker buildx inspect --bootstrap
+----
+
 === Remove existing container
 [source,shell]
 ----

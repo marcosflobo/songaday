@@ -19,7 +19,7 @@ curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7
 In localhost
 [source,shell]
 ----
-curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7U6WmHsakD?si=b7fb070b9b2441c3"}' 'http://localhost:8080/v1/send/song' -H 'Content-Type: application/json'
+curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/0CtkjgZpkgnW7U6WmHsakD?si=b7fb070b9b2441c3"}' 'https://songaday.onrender.com/v1/send/song' -H 'Content-Type: application/json'
 ----
 
 == Build docker image & run
@@ -63,7 +63,7 @@ docker rm $CONTAINER
 === Run docker container with environment variables
 [source,shell]
 ----
-docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 8080 --name mysongaday -it songaday
+docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 8080 --name mysongaday -it marcosflobo/songaday
 ----
 
 === Publish docker image

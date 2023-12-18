@@ -1,7 +1,11 @@
 package com.marcosflobo.telegrambot;
 
 import com.marcosflobo.sendsong.TelegramBotServiceUtils;
+import com.marcosflobo.storage.SongReader;
+import com.marcosflobo.storage.UsersService;
 import io.micronaut.context.annotation.Property;
+import java.io.IOException;
+import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -23,9 +27,14 @@ public class Bot extends TelegramLongPollingBot {
   private Long userId;
 
   private final TelegramBotServiceUtils telegramBotServiceUtils;
+  private final UsersService usersService;
+  private final SongReader songReader;
 
-  public Bot(TelegramBotServiceUtils telegramBotServiceUtils) {
+  public Bot(TelegramBotServiceUtils telegramBotServiceUtils, UsersService usersService,
+      SongReader songReader) {
     this.telegramBotServiceUtils = telegramBotServiceUtils;
+    this.usersService = usersService;
+    this.songReader = songReader;
   }
 
   @Override
@@ -49,17 +58,31 @@ public class Bot extends TelegramLongPollingBot {
 
       SendMessage message = new SendMessage();
       message.setChatId(chatId);
-      message.setText(
-          "¡Hola! " + userFirstName + " Has enviado el siguiente mensaje: " + messageText);
+      if (update.getMessage().isCommand()) {
+        if (messageText.equals("/subscribe")) {
+          usersService.add(userId);
 
-      try {
-        execute(message);
-      } catch (TelegramApiException e) {
-        log.error("Error at the time to send a message on onUpdateReceived. "
-                + "Update object: {} - "
-                + "Exception: {}",
-            update,
-            e.getMessage());
+          log.info("Users so far: {}", usersService);
+          message.setText("Yeah!💪 You are subscribed now!");
+          try {
+            List<String> tracks = songReader.readTracksFromFile();
+            send(tracks.get(0));
+          } catch (IOException e) {
+            throw new RuntimeException(e);
+          }
+        }
+      } else {
+        message.setText(
+            "¡Hola! 👋 " + userFirstName + " Has enviado el siguiente mensaje: " + messageText);
+        try {
+          execute(message);
+        } catch (TelegramApiException e) {
+          log.error("Error at the time to send a message on onUpdateReceived. "
+                  + "Update object: {} - "
+                  + "Exception: {}",
+              update,
+              e.getMessage());
+        }
       }
     }
   }

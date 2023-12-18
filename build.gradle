@@ -25,6 +25,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.telegram/telegrambots
     implementation ("org.telegram:telegrambots:6.8.0")
+
+    // redis
+    implementation("io.micronaut.redis:micronaut-redis-lettuce")
 }
 
 

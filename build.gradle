@@ -28,6 +28,12 @@ dependencies {
 
     // redis
     implementation("io.micronaut.redis:micronaut-redis-lettuce")
+
+    // FTP & CSV
+    // https://mvnrepository.com/artifact/commons-net/commons-net
+    implementation 'commons-net:commons-net:3.10.0'
+    implementation 'com.opencsv:opencsv:5.9'
+
 }
 
 

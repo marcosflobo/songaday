@@ -19,9 +19,9 @@ public class RedisServiceUsers implements UsersService {
   @Override
   public void add(Long userId) {
 
-      RedisCommands<String, String> syncCommands = connection.sync();
+    RedisCommands<String, String> syncCommands = connection.sync();
 
-      syncCommands.zadd("users", 0, userId.toString());
+    syncCommands.zadd("users", 0, userId.toString());
     List<String> users = syncCommands.zrange("users", 0, -1);
     log.info(users.toString());
   }

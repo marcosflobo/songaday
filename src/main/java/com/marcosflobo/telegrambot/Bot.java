@@ -1,11 +1,11 @@
 package com.marcosflobo.telegrambot;
 
 import com.marcosflobo.sendsong.TelegramBotServiceUtils;
+import com.marcosflobo.storage.SongMemoryDatabase;
 import com.marcosflobo.storage.SongReader;
 import com.marcosflobo.storage.UsersService;
+import com.marcosflobo.storage.dto.Song;
 import io.micronaut.context.annotation.Property;
-import java.io.IOException;
-import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -30,11 +30,14 @@ public class Bot extends TelegramLongPollingBot {
   private final UsersService usersService;
   private final SongReader songReader;
 
+  private final SongMemoryDatabase songMemoryDatabase;
+
   public Bot(TelegramBotServiceUtils telegramBotServiceUtils, UsersService usersService,
-      SongReader songReader) {
+      SongReader songReader, SongMemoryDatabase songMemoryDatabase) {
     this.telegramBotServiceUtils = telegramBotServiceUtils;
     this.usersService = usersService;
     this.songReader = songReader;
+    this.songMemoryDatabase = songMemoryDatabase;
   }
 
   @Override
@@ -64,12 +67,8 @@ public class Bot extends TelegramLongPollingBot {
 
           log.info("Users so far: {}", usersService);
           message.setText("Yeah!💪 You are subscribed now!");
-          try {
-            List<String> tracks = songReader.readTracksFromFile();
-            send(tracks.get(0));
-          } catch (IOException e) {
-            throw new RuntimeException(e);
-          }
+          Song song = songMemoryDatabase.get("2023/12/20");
+          send(song.getUrl());
         }
       } else {
         message.setText(

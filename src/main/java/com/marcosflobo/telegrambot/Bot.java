@@ -87,14 +87,14 @@ public class Bot extends TelegramLongPollingBot {
     }
   }
 
-  public void send(String what) {
+  public void send(String songUrl) {
 
     SendMessage message = SendMessage.builder()
         .chatId(userId) //Who are we sending a message to
-        .text(telegramBotServiceUtils.buildMessageSendSong(what))
+        .text(telegramBotServiceUtils.buildMessageSendSong(songUrl))
         .build();    //Message content
     try {
-      log.debug("Sending message to '{}'...", userId);
+      log.info("Sending son {} to '{}'...", songUrl, userId);
       execute(message);                        //Actually sending the message
       log.info("Message sent to '{}'", userId);
     } catch (TelegramApiException e) {      //Any error will be printed here

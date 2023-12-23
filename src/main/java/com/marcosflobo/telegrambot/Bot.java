@@ -60,9 +60,10 @@ public class Bot extends TelegramLongPollingBot {
       message.setChatId(chatId);
       if (update.getMessage().isCommand()) {
         if (messageText.equals("/subscribe")) {
+          log.info("Command /subscribe by user '{}'", userId);
           // Add user to the database
           usersService.add(userId);
-          log.info("Users so far: {}", usersService);
+          log.info("Users so far after subscribe: {}", usersService);
           sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
 
           // Send today's song
@@ -72,6 +73,14 @@ public class Bot extends TelegramLongPollingBot {
           } catch (NoSongForTodayException e) {
             log.warn(e.getMessage());
           }
+        } else if (messageText.equals("/unsubscribe")) {
+          log.info("Command /unsubscribe by user '{}'", userId);
+          // send farewell message
+          sendGeneralMessage(userId, telegramLanguageMessages.userUnSubscribed(user));
+
+          // remove user from database
+          usersService.delete(userId);
+          log.info("Users so far after unsubscribe: {}", usersService);
         }
       } else {
         sendGeneralMessage(userId,

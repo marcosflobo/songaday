@@ -45,7 +45,7 @@ docker rm $CONTAINER
 docker image rm songaday
 docker build -t songaday:latest .
 ----
-=== Build docker image
+=== Build docker image for ARMV7L
 
 [source,shell]
 ----
@@ -83,7 +83,8 @@ docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 808
 === Publish docker image
 [source,shell]
 ----
-docker image tag songaday marcosflobo/songaday:1.0.0
+docker login
+docker image tag songaday marcosflobo/songaday:2.0.0
 docker image tag songaday marcosflobo/songaday:latest
 docker push --all-tags marcosflobo/songaday
 ----

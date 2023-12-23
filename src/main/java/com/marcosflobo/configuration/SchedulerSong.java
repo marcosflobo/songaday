@@ -18,8 +18,7 @@ public class SchedulerSong {
   /**
    * Run this method every day at 9 a.m.
    */
-  @Scheduled(cron = "* * * * *")
-  @Scheduled(cron = "0 9 * * *")
+  @Scheduled(cron = "${schedule.dailysong}")
   void sendDailySong() {
 
     log.info("Running sendSongOfTheDayToAllUsers");

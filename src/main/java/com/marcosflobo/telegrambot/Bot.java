@@ -3,6 +3,7 @@ package com.marcosflobo.telegrambot;
 import com.marcosflobo.sendsong.SongDispatcherToTelegram;
 import com.marcosflobo.sendsong.TelegramBotServiceUtils;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
+import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.UsersService;
 import io.micronaut.context.annotation.Property;
 import javax.inject.Singleton;
@@ -59,12 +60,18 @@ public class Bot extends TelegramLongPollingBot {
       message.setChatId(chatId);
       if (update.getMessage().isCommand()) {
         if (messageText.equals("/subscribe")) {
+          // Add user to the database
           usersService.add(userId);
-
           log.info("Users so far: {}", usersService);
           sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
-          String songUrl = songDispatcherToTelegram.getNextSong();
-          sendSong(userId, songUrl);
+
+          // Send today's song
+          try {
+            String songUrl = songDispatcherToTelegram.getNextSong();
+            sendSong(userId, songUrl);
+          } catch (NoSongForTodayException e) {
+            log.warn(e.getMessage());
+          }
         }
       } else {
         sendGeneralMessage(userId,

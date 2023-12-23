@@ -84,8 +84,8 @@ public class Bot extends TelegramLongPollingBot {
           log.info("Users so far after unsubscribe: {}", usersService);
         }
       } else {
-        sendGeneralMessage(userId,
-            "¡Hola! 👋 " + userFirstName + " Has enviado el siguiente mensaje: " + messageText);
+        // Action not supported
+        sendGeneralMessage(userId, telegramLanguageMessages.actionNotSupported(user));
       }
     }
   }

@@ -1,6 +1,6 @@
 package com.marcosflobo.telegrambot;
 
-import com.marcosflobo.sendsong.SongDispatcherToTelegram;
+import com.marcosflobo.sendsong.SongService;
 import com.marcosflobo.sendsong.TelegramBotServiceUtils;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
@@ -25,16 +25,16 @@ public class Bot extends TelegramLongPollingBot {
   private String botUserName;
   private final TelegramBotServiceUtils telegramBotServiceUtils;
   private final UsersService usersService;
-  private final SongDispatcherToTelegram songDispatcherToTelegram;
+  private final SongService songService;
   private final TelegramLanguageMessages telegramLanguageMessages;
 
   public Bot(TelegramBotServiceUtils telegramBotServiceUtils, UsersService usersService,
-      SongDispatcherToTelegram songDispatcherToTelegram,
+      SongService songService,
       TelegramLanguageMessages telegramLanguageMessages) {
     this.telegramBotServiceUtils = telegramBotServiceUtils;
     this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
-    this.songDispatcherToTelegram = songDispatcherToTelegram;
+    this.songService = songService;
   }
 
   @Override
@@ -68,7 +68,8 @@ public class Bot extends TelegramLongPollingBot {
 
           // Send today's song
           try {
-            String songUrl = songDispatcherToTelegram.getNextSong();
+            usersService.getAll();
+            String songUrl = songService.getNextSong();
             sendSong(userId, songUrl);
           } catch (NoSongForTodayException e) {
             log.warn(e.getMessage());

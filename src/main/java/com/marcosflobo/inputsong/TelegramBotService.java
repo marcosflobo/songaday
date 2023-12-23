@@ -1,4 +1,4 @@
-package com.marcosflobo.sendsong;
+package com.marcosflobo.inputsong;
 
 import com.marcosflobo.telegrambot.Bot;
 import javax.inject.Singleton;

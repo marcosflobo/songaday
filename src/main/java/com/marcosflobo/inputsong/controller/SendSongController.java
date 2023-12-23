@@ -1,7 +1,7 @@
 package com.marcosflobo.inputsong.controller;
 
 import com.marcosflobo.inputsong.dto.RequestSong;
-import com.marcosflobo.sendsong.TelegramBotService;
+import com.marcosflobo.inputsong.TelegramBotService;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.annotation.Body;
 import io.micronaut.http.annotation.Controller;

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RedisServiceUsers implements UsersService {
 
   private final StatefulRedisConnection<String, String> connection;
+  private final static String USERS_KEY = "users";
 
   public RedisServiceUsers(StatefulRedisConnection<String, String> connection) {
     this.connection = connection;
@@ -21,8 +22,8 @@ public class RedisServiceUsers implements UsersService {
 
     RedisCommands<String, String> syncCommands = connection.sync();
 
-    syncCommands.zadd("users", 0, userId.toString());
-    List<String> users = syncCommands.zrange("users", 0, -1);
+    syncCommands.zadd(USERS_KEY, 0, userId.toString());
+    List<String> users = syncCommands.zrange(USERS_KEY, 0, -1);
     log.info(users.toString());
   }
 
@@ -31,6 +32,13 @@ public class RedisServiceUsers implements UsersService {
 
     RedisCommands<String, String> syncCommands = connection.sync();
 
-    syncCommands.zrem("users", userId.toString());
+    syncCommands.zrem(USERS_KEY, userId.toString());
+  }
+
+  @Override
+  public List<String> getAll() {
+    RedisCommands<String, String> syncCommands = connection.sync();
+
+    return syncCommands.zrange(USERS_KEY, 0, -1);
   }
 }

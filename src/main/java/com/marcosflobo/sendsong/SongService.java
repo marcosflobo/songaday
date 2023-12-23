@@ -8,11 +8,11 @@ import com.marcosflobo.storage.dto.Song;
 import jakarta.inject.Singleton;
 
 @Singleton
-public class SongDispatcherToTelegram {
+public class SongService {
 
   private final SongMemoryDatabase songMemoryDatabase;
 
-  public SongDispatcherToTelegram(SongMemoryDatabase songMemoryDatabase) {
+  public SongService(SongMemoryDatabase songMemoryDatabase) {
     this.songMemoryDatabase = songMemoryDatabase;
   }
 

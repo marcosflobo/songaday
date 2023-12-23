@@ -1,5 +1,6 @@
-package com.marcosflobo.inputsong;
+package com.marcosflobo.configuration;
 
+import com.marcosflobo.inputsong.FtpService;
 import com.marcosflobo.storage.SongMemoryDatabase;
 import com.marcosflobo.storage.dto.Song;
 import io.micronaut.context.event.ApplicationEventListener;

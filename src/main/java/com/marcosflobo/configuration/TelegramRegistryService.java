@@ -1,4 +1,4 @@
-package com.marcosflobo.telegrambot;
+package com.marcosflobo.configuration;
 
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;

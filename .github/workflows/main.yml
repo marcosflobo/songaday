@@ -1,0 +1,16 @@
+name: Curl to endpoint
+on:
+  schedule:
+    - cron: '*/2 * * * *'  # Ejecutar cada 1 minuto
+
+jobs:
+  curl-to-google:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Curl to Google
+      run: |
+        curl -sSf https://www.google.es

@@ -40,10 +40,13 @@ curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/11y8GSP2ASv8S
 === Build docker image
 [source,shell]
 ----
+./gradlew clean assemble
+----
+[source,shell]
+----
 CONTAINER=$(docker ps -a | grep -i songaday | awk '{print $1}')
 docker rm $CONTAINER
-docker image rm songaday
-./gradlew clean assemble
+docker image rm songaday:latest
 docker build -t songaday:latest .
 ----
 === Build docker image for ARMV7L
@@ -85,7 +88,7 @@ docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 808
 [source,shell]
 ----
 docker login
-docker image tag songaday marcosflobo/songaday:2.0.5
+docker image tag songaday marcosflobo/songaday:2.0.10
 docker image tag songaday marcosflobo/songaday:latest
 docker push --all-tags marcosflobo/songaday
 ----

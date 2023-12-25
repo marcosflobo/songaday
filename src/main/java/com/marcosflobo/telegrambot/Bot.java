@@ -1,7 +1,6 @@
 package com.marcosflobo.telegrambot;
 
 import com.marcosflobo.sendsong.SongService;
-import com.marcosflobo.sendsong.TelegramBotServiceUtils;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.UsersService;
@@ -23,15 +22,13 @@ public class Bot extends TelegramLongPollingBot {
 
   @Property(name = "telegram.botusername")
   private String botUserName;
-  private final TelegramBotServiceUtils telegramBotServiceUtils;
   private final UsersService usersService;
   private final SongService songService;
   private final TelegramLanguageMessages telegramLanguageMessages;
 
-  public Bot(TelegramBotServiceUtils telegramBotServiceUtils, UsersService usersService,
+  public Bot(UsersService usersService,
       SongService songService,
       TelegramLanguageMessages telegramLanguageMessages) {
-    this.telegramBotServiceUtils = telegramBotServiceUtils;
     this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
     this.songService = songService;
@@ -51,7 +48,6 @@ public class Bot extends TelegramLongPollingBot {
   public void onUpdateReceived(Update update) {
     if (update.hasMessage() && update.getMessage().hasText()) {
       User user = update.getMessage().getFrom();
-      String userFirstName = user.getFirstName();
       Long userId = user.getId();
       long chatId = update.getMessage().getChatId();
       String messageText = update.getMessage().getText();
@@ -108,10 +104,10 @@ public class Bot extends TelegramLongPollingBot {
 
     SendMessage message = SendMessage.builder()
         .chatId(userId) //Who are we sending a message to
-        .text(telegramBotServiceUtils.buildMessageSendSong(songUrl))
+        .text(telegramLanguageMessages.dailySong() + songUrl)
         .build();    //Message content
     try {
-      log.info("Sending song {} to '{}'...", songUrl, userId);
+      log.info("Sending song to '{}'...", userId);
       execute(message);                        //Actually sending the message
       log.info("Message sent to '{}'", userId);
     } catch (TelegramApiException e) {      //Any error will be printed here

@@ -17,6 +17,6 @@ public class TelegramBotService {
   public void sendMessage(String url) {
 
     log.info("Sending song URL through Telegram Bot");
-    bot.sendSong(1L, url);
+    //bot.sendSong(1L, url);
   }
 }

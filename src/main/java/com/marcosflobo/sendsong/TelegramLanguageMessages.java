@@ -11,16 +11,19 @@ import org.telegram.telegrambots.meta.api.objects.User;
 @Singleton
 public class TelegramLanguageMessages {
 
+  private static final String DAILY_SONG = "DAILY_SONG";
   private static final String NOT_SUPPORTED = "NOT_SUPPORTED";
   private static final String USER_SUBSCRIBED = "USER_SUBSCRIBED";
   private static final String USER_UNSUBSCRIBED = "USER_UNSUBSCRIBED";
   private static final Map<String, Map<String, String>> messages = new HashMap<>() {{
     put("en", new HashMap<>() {{
+      put(DAILY_SONG, "\uD83C\uDFB5\uD83D\uDC9CDaily song arrived!\uD83D\uDC47\uD83C\uDFFD\r\n\r\n");
       put(NOT_SUPPORTED, "Hi!👋 By the moment I'm not able to interact with you, I can just send you a daily song. /subscribe if you did not yet and enjoy!");
       put(USER_SUBSCRIBED, "Yeah!💪 You are subscribed now!");
       put(USER_UNSUBSCRIBED, "Well!👋 It was nice while it lasted. You can resubscribe at any time using the menu option /subscribe");
     }});
     put("es", new HashMap<>() {{
+      put(DAILY_SONG, "\uD83C\uDFB5\uD83D\uDC9C¡La música del día!\uD83D\uDC47\uD83C\uDFFD\r\n\r\n");
       put(NOT_SUPPORTED, "¡Hola!👋 Por el momento no puedo interactuar contigo, solo puedo enviarte una canción diaria. ¡ /subscribe si aún no lo has hecho y disfruta!");
       put(USER_SUBSCRIBED, "¡Genial!💪 ¡Ya estás suscrito!");
       put(USER_UNSUBSCRIBED, "¡Bueno!👋 ¡Fue bonito mientras duró! Puedes volver a subscribirte en cualquier momento usando la opción de menú /subscribe");
@@ -28,6 +31,10 @@ public class TelegramLanguageMessages {
   }};
 
   private final String[] langCodesAllowed = new String[]{"en", "es"};
+
+  public String dailySong() {
+    return getTelegramMessage("en", DAILY_SONG);
+  }
 
   public String actionNotSupported(final User user) {
 

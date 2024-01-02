@@ -4,7 +4,12 @@ import com.marcosflobo.sendsong.SongService;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.UsersService;
+import com.marcosflobo.storage.mysql.UserMysqlRepository;
+import com.marcosflobo.storage.mysql.dto.TelegramUser;
+import com.marcosflobo.storage.mysql.dto.TelegramUserData;
+import com.marcosflobo.storage.mysql.dto.TelegramUserDataMapper;
 import io.micronaut.context.annotation.Property;
+import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -25,13 +30,17 @@ public class Bot extends TelegramLongPollingBot {
   private final UsersService usersService;
   private final SongService songService;
   private final TelegramLanguageMessages telegramLanguageMessages;
-
+  private final UserMysqlRepository userMysqlRepository;
+  private final TelegramUserDataMapper telegramUserDataMapper;
   public Bot(UsersService usersService,
       SongService songService,
-      TelegramLanguageMessages telegramLanguageMessages) {
+      TelegramLanguageMessages telegramLanguageMessages, UserMysqlRepository userMysqlRepository,
+      TelegramUserDataMapper telegramUserDataMapper) {
     this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
     this.songService = songService;
+    this.userMysqlRepository = userMysqlRepository;
+    this.telegramUserDataMapper = telegramUserDataMapper;
   }
 
   @Override
@@ -59,6 +68,9 @@ public class Bot extends TelegramLongPollingBot {
           log.info("Command /subscribe by user '{}'", userId);
           // Add user to the database
           usersService.add(userId);
+          TelegramUserData telegramUserData = telegramUserDataMapper.fromUserToTelegramUserData(
+              user);
+          userMysqlRepository.save(userId, telegramUserData.toString());
           log.info("Users so far after subscribe: {}", usersService);
           sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
 
@@ -80,6 +92,8 @@ public class Bot extends TelegramLongPollingBot {
           log.info("Users so far after unsubscribe: {}", usersService);
         }
       } else {
+        List<TelegramUser> all = userMysqlRepository.findAll();
+        log.info(all.toString());
         // Action not supported
         sendGeneralMessage(userId, telegramLanguageMessages.actionNotSupported(user));
       }

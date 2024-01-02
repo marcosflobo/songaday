@@ -35,6 +35,10 @@ dependencies {
     implementation 'commons-net:commons-net:3.10.0'
     implementation 'com.opencsv:opencsv:5.9'
 
+    //test containers
+    testImplementation "org.testcontainers:testcontainers:1.19.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.19.3"
+
 }
 
 

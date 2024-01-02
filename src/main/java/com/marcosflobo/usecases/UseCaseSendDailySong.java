@@ -1,4 +1,4 @@
-package com.marcosflobo.inputschedule;
+package com.marcosflobo.usecases;
 
 import com.marcosflobo.sendsong.SongService;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;

@@ -64,4 +64,18 @@ public class FtpService {
 
     return songList;
   }
+
+  public void upload(String filePath, String data) {
+
+    FTPClient ftpClient = new FTPClient();
+    try {
+      ftpClient.connect(ftpServer, ftpPort);
+      ftpClient.login(ftpUser, ftpPassword);
+      ftpClient.enterLocalPassiveMode();
+      ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 }

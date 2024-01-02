@@ -1,6 +1,6 @@
 package com.marcosflobo.configuration;
 
-import com.marcosflobo.inputschedule.UseCaseSendDailySong;
+import com.marcosflobo.usecases.UseCaseSendDailySong;
 import io.micronaut.scheduling.annotation.Scheduled;
 import jakarta.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;

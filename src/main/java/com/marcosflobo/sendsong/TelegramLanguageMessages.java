@@ -23,7 +23,7 @@ public class TelegramLanguageMessages {
       put(USER_UNSUBSCRIBED, "Well!👋 It was nice while it lasted. You can resubscribe at any time using the menu option /subscribe");
     }});
     put("es", new HashMap<>() {{
-      put(DAILY_SONG, "\uD83C\uDFB5\uD83D\uDC9C¡La música del día!\uD83D\uDC47\uD83C\uDFFD\r\n\r\n");
+      put(DAILY_SONG, "\uD83C\uDFB5\uD83D\uDC9C¡La canción del día!\uD83D\uDC47\uD83C\uDFFD\r\n\r\n");
       put(NOT_SUPPORTED, "¡Hola!👋 Por el momento no puedo interactuar contigo, solo puedo enviarte una canción diaria. ¡ /subscribe si aún no lo has hecho y disfruta!");
       put(USER_SUBSCRIBED, "¡Genial!💪 ¡Ya estás suscrito!");
       put(USER_UNSUBSCRIBED, "¡Bueno!👋 ¡Fue bonito mientras duró! Puedes volver a subscribirte en cualquier momento usando la opción de menú /subscribe");

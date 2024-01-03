@@ -6,11 +6,8 @@ import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.UsersService;
 import com.marcosflobo.storage.mysql.UserMysqlRepository;
 import com.marcosflobo.storage.mysql.dto.TelegramUser;
-import com.marcosflobo.storage.mysql.dto.TelegramUserData;
 import com.marcosflobo.storage.mysql.dto.TelegramUserDataMapper;
 import io.micronaut.context.annotation.Property;
-import io.micronaut.data.exceptions.EmptyResultException;
-import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -33,15 +30,20 @@ public class Bot extends TelegramLongPollingBot {
   private final TelegramLanguageMessages telegramLanguageMessages;
   private final UserMysqlRepository userMysqlRepository;
   private final TelegramUserDataMapper telegramUserDataMapper;
+  private final TelegramStartSubscribe startCommand;
+  private final TelegramUnsubscribe unsubscribeCommand;
   public Bot(UsersService usersService,
       SongService songService,
       TelegramLanguageMessages telegramLanguageMessages, UserMysqlRepository userMysqlRepository,
-      TelegramUserDataMapper telegramUserDataMapper) {
+      TelegramUserDataMapper telegramUserDataMapper, TelegramStartSubscribe startCommand,
+      TelegramUnsubscribe unsubscribeCommand) {
     this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
     this.songService = songService;
     this.userMysqlRepository = userMysqlRepository;
     this.telegramUserDataMapper = telegramUserDataMapper;
+    this.startCommand = startCommand;
+    this.unsubscribeCommand = unsubscribeCommand;
   }
 
   @Override
@@ -65,9 +67,13 @@ public class Bot extends TelegramLongPollingBot {
       SendMessage message = new SendMessage();
       message.setChatId(chatId);
       if (update.getMessage().isCommand()) {
-        if (messageText.equals("/subscribe")) {
+        if (messageText.equals("/start")){
+          log.info("Command /start by user '{}'", userId);
+          sendGeneralMessage(userId, telegramLanguageMessages.start(user.getLanguageCode()));
+        } else if (messageText.equals("/subscribe")) {
           log.info("Command /subscribe by user '{}'", userId);
-          subscribe(user);
+          startCommand.setUser(user);
+          startCommand.execute();
           sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
 
           // Send today's song
@@ -83,38 +89,14 @@ public class Bot extends TelegramLongPollingBot {
           sendGeneralMessage(userId, telegramLanguageMessages.userUnSubscribed(user));
 
           // remove user from database
-          unsubscribe(userId);
+          unsubscribeCommand.setUser(user);
+          unsubscribeCommand.execute();
         }
       } else {
         // Action not supported
         sendGeneralMessage(userId, telegramLanguageMessages.actionNotSupported(user));
       }
     }
-  }
-
-  private void unsubscribe(Long userId) {
-    usersService.delete(userId);
-    userMysqlRepository.deleteByTelegramUserId(userId);
-  }
-
-  private void subscribe(User user) {
-    // Add user to the database
-    Long userId = user.getId();
-    TelegramUserData telegramUserData = telegramUserDataMapper.fromUserToTelegramUserData(
-        user);
-    try {
-      TelegramUser byTelegramUserId = userMysqlRepository.getByTelegramUserId(userId);
-      log.info("User '{}' already exists, updating data in database", userId);
-      byTelegramUserId.setTelegramUserData(telegramUserData);
-      userMysqlRepository.update(byTelegramUserId);
-    } catch (EmptyResultException exception) {
-      log.info("New user '{}', Adding to the database", userId);
-      userMysqlRepository.save(userId, telegramUserData);
-    }
-    List<TelegramUser> all = userMysqlRepository.findAll();
-    log.info("List of users in MySQL: {}", all.toString());
-    List<String> usersServiceAll = usersService.getAll();
-    log.info("Users in Redis: {}", usersServiceAll.toString());
   }
 
   public void sendGeneralMessage(Long userId, String msg) {

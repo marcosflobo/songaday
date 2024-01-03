@@ -35,6 +35,19 @@ dependencies {
     implementation 'commons-net:commons-net:3.10.0'
     implementation 'com.opencsv:opencsv:5.9'
 
+    // Mysql
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+    implementation("io.micronaut.data:micronaut-data-jdbc")
+//    implementation("io.micronaut.flyway:micronaut-flyway")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("jakarta.validation:jakarta.validation-api")
+    runtimeOnly("mysql:mysql-connector-java")
+//    runtimeOnly("org.flywaydb:flyway-mysql")
+    runtimeOnly("org.yaml:snakeyaml")
+
+
 }
 
 

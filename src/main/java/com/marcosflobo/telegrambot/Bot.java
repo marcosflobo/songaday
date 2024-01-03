@@ -4,7 +4,13 @@ import com.marcosflobo.sendsong.SongService;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.UsersService;
+import com.marcosflobo.storage.mysql.UserMysqlRepository;
+import com.marcosflobo.storage.mysql.dto.TelegramUser;
+import com.marcosflobo.storage.mysql.dto.TelegramUserData;
+import com.marcosflobo.storage.mysql.dto.TelegramUserDataMapper;
 import io.micronaut.context.annotation.Property;
+import io.micronaut.data.exceptions.EmptyResultException;
+import java.util.List;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -25,13 +31,17 @@ public class Bot extends TelegramLongPollingBot {
   private final UsersService usersService;
   private final SongService songService;
   private final TelegramLanguageMessages telegramLanguageMessages;
-
+  private final UserMysqlRepository userMysqlRepository;
+  private final TelegramUserDataMapper telegramUserDataMapper;
   public Bot(UsersService usersService,
       SongService songService,
-      TelegramLanguageMessages telegramLanguageMessages) {
+      TelegramLanguageMessages telegramLanguageMessages, UserMysqlRepository userMysqlRepository,
+      TelegramUserDataMapper telegramUserDataMapper) {
     this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
     this.songService = songService;
+    this.userMysqlRepository = userMysqlRepository;
+    this.telegramUserDataMapper = telegramUserDataMapper;
   }
 
   @Override
@@ -57,14 +67,11 @@ public class Bot extends TelegramLongPollingBot {
       if (update.getMessage().isCommand()) {
         if (messageText.equals("/subscribe")) {
           log.info("Command /subscribe by user '{}'", userId);
-          // Add user to the database
-          usersService.add(userId);
-          log.info("Users so far after subscribe: {}", usersService);
+          subscribe(user);
           sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
 
           // Send today's song
           try {
-            usersService.getAll();
             String songUrl = songService.getNextSong();
             sendSong(userId, songUrl);
           } catch (NoSongForTodayException e) {
@@ -76,14 +83,38 @@ public class Bot extends TelegramLongPollingBot {
           sendGeneralMessage(userId, telegramLanguageMessages.userUnSubscribed(user));
 
           // remove user from database
-          usersService.delete(userId);
-          log.info("Users so far after unsubscribe: {}", usersService);
+          unsubscribe(userId);
         }
       } else {
         // Action not supported
         sendGeneralMessage(userId, telegramLanguageMessages.actionNotSupported(user));
       }
     }
+  }
+
+  private void unsubscribe(Long userId) {
+    usersService.delete(userId);
+    userMysqlRepository.deleteByTelegramUserId(userId);
+  }
+
+  private void subscribe(User user) {
+    // Add user to the database
+    Long userId = user.getId();
+    TelegramUserData telegramUserData = telegramUserDataMapper.fromUserToTelegramUserData(
+        user);
+    try {
+      TelegramUser byTelegramUserId = userMysqlRepository.getByTelegramUserId(userId);
+      log.info("User '{}' already exists, updating data in database", userId);
+      byTelegramUserId.setTelegramUserData(telegramUserData);
+      userMysqlRepository.update(byTelegramUserId);
+    } catch (EmptyResultException exception) {
+      log.info("New user '{}', Adding to the database", userId);
+      userMysqlRepository.save(userId, telegramUserData);
+    }
+    List<TelegramUser> all = userMysqlRepository.findAll();
+    log.info("List of users in MySQL: {}", all.toString());
+    List<String> usersServiceAll = usersService.getAll();
+    log.info("Users in Redis: {}", usersServiceAll.toString());
   }
 
   public void sendGeneralMessage(Long userId, String msg) {
@@ -105,6 +136,21 @@ public class Bot extends TelegramLongPollingBot {
     SendMessage message = SendMessage.builder()
         .chatId(userId) //Who are we sending a message to
         .text(telegramLanguageMessages.dailySong() + songUrl)
+        .build();    //Message content
+    try {
+      log.info("Sending song to '{}'...", userId);
+      execute(message);                        //Actually sending the message
+      log.info("Message sent to '{}'", userId);
+    } catch (TelegramApiException e) {      //Any error will be printed here
+      log.error("Error sending message to user '{}'. Exception: {}", userId, e.getMessage());
+    }
+  }
+  public void sendSong(TelegramUser telegramUser, String songUrl) {
+
+    Long userId = telegramUser.getTelegramUserId();
+    SendMessage message = SendMessage.builder()
+        .chatId(userId) //Who are we sending a message to
+        .text(telegramLanguageMessages.dailySong(telegramUser.getTelegramUserData().getLanguageCode()) + songUrl)
         .build();    //Message content
     try {
       log.info("Sending song to '{}'...", userId);

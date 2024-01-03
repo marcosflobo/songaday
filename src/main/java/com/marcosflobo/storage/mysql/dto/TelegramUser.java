@@ -3,6 +3,8 @@ package com.marcosflobo.storage.mysql.dto;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.annotation.TypeDef;
+import io.micronaut.data.model.DataType;
 import io.micronaut.serde.annotation.Serdeable;
 import lombok.Data;
 
@@ -15,5 +17,6 @@ public class TelegramUser {
   @GeneratedValue(GeneratedValue.Type.AUTO)
   private Long id;
   private Long telegramUserId;
-  private String telegramUserData;
+  @TypeDef(type = DataType.JSON)
+  private TelegramUserData telegramUserData;
 }

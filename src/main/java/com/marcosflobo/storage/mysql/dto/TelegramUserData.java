@@ -1,7 +1,9 @@
 package com.marcosflobo.storage.mysql.dto;
 
+import io.micronaut.serde.annotation.Serdeable;
 import lombok.Data;
 
+@Serdeable
 @Data
 public class TelegramUserData {
 

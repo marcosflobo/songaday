@@ -35,6 +35,9 @@ public class TelegramLanguageMessages {
   public String dailySong() {
     return getTelegramMessage("en", DAILY_SONG);
   }
+  public String dailySong(final String langCode) {
+    return getTelegramMessage(langCode, DAILY_SONG);
+  }
 
   public String actionNotSupported(final User user) {
 

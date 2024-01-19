@@ -101,6 +101,16 @@ docker rm $CONTAINER
 docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 8080 --name mysongaday -it marcosflobo/songaday
 ----
 
+=== Run all local docker container, and database un remote, with environment variables
+[source,shell]
+----
+docker stop redis-stack-server && docker rm redis-stack-server
+docker stop mysongaday && docker rm mysongaday
+docker network create mynetwork
+docker run -v /local-data/:$PWD/data -d --network mynetwork --name redis-stack-server -p 6379:6379 redis/redis-stack-server:latest
+docker run --env-file .env --expose 8080 --network mynetwork --name mysongaday -it songaday
+----
+
 === Publish docker image
 [source,shell]
 ----

@@ -105,7 +105,7 @@ docker run --env TELEGRAM_TOKEN=foo --env TELEGRAM_BOTUSERNAME=@bar --expose 808
 [source,shell]
 ----
 docker login
-docker image tag songaday marcosflobo/songaday:2.0.10
+docker image tag songaday marcosflobo/songaday:2.1.3
 docker image tag songaday marcosflobo/songaday:latest
 docker push --all-tags marcosflobo/songaday
 ----

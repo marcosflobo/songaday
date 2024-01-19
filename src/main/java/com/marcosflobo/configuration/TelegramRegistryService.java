@@ -1,5 +1,6 @@
 package com.marcosflobo.configuration;
 
+import io.micronaut.context.annotation.Property;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import java.util.List;
@@ -16,6 +17,8 @@ public class TelegramRegistryService implements ApplicationEventListener<Startup
 
   @Inject
   List<LongPollingBot> longPollingBots;
+  @Property(name = "datasources.default.url")
+  private String databaseHost;
 
   @Override
   public void onApplicationEvent(StartupEvent event) {
@@ -23,6 +26,7 @@ public class TelegramRegistryService implements ApplicationEventListener<Startup
     try {
       botsApi = new TelegramBotsApi(DefaultBotSession.class);
 
+      log.info("Database connection string {}", databaseHost);
       log.info("Registering Longpolling Bots");
       for (LongPollingBot bot : longPollingBots) {
         try {

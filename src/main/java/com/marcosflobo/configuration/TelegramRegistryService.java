@@ -17,7 +17,7 @@ public class TelegramRegistryService implements ApplicationEventListener<Startup
 
   @Inject
   List<LongPollingBot> longPollingBots;
-  @Property(name = "datasources.default.url")
+  @Property(name = "datasources.external.url")
   private String databaseHost;
 
   @Override

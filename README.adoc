@@ -57,10 +57,6 @@ curl -i -X POST -d '{"url":"https://open.spotify.com/intl-es/track/11y8GSP2ASv8S
 === Build docker image
 [source,shell]
 ----
-./gradlew clean assemble
-----
-[source,shell]
-----
 CONTAINER=$(docker ps -a | grep -i songaday | awk '{print $1}')
 docker rm $CONTAINER
 docker image rm songaday:latest
@@ -114,10 +110,12 @@ docker run --env-file .env --expose 8080 --network mynetwork --name mysongaday -
 === Publish docker image
 [source,shell]
 ----
+TAG=2.1.4
 docker login
-docker image tag songaday marcosflobo/songaday:2.1.3
+docker image tag songaday marcosflobo/songaday:$TAG
 docker image tag songaday marcosflobo/songaday:latest
-docker push --all-tags marcosflobo/songaday
+docker push marcosflobo/songaday:$TAG
+docker push marcosflobo/songaday:latest
 ----
 
 == Micronaut

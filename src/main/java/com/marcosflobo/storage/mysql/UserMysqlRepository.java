@@ -8,7 +8,7 @@ import io.micronaut.data.repository.PageableRepository;
 import jakarta.annotation.Nonnull;
 
 
-@JdbcRepository(dialect = Dialect.MYSQL)
+@JdbcRepository(dialect = Dialect.MYSQL, value = "external", dataSource = "external")
 public interface UserMysqlRepository extends PageableRepository<TelegramUser, Long> {
 
   TelegramUser save(@Nonnull Long telegramUserId, @Nonnull TelegramUserData telegramUserData);

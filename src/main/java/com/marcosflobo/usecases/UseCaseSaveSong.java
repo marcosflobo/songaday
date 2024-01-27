@@ -11,7 +11,7 @@ public class UseCaseSaveSong implements StoreSong {
   private InputSong inputSong;
 
   private final SongDatastore songDatastore;
-  private MapperSongEntity mapperSongEntity;
+  private final MapperSongEntity mapperSongEntity;
 
   public UseCaseSaveSong(SongDatastore songDatastore) {
     this.songDatastore = songDatastore;

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class SongDatastoreInMemoryImpl implements SongDatastore{
 
-  private ConcurrentHashMap<String, Song> store;
+  private final ConcurrentHashMap<String, Song> store;
 
   public SongDatastoreInMemoryImpl() {
     store = new ConcurrentHashMap<>();

@@ -5,5 +5,5 @@ import com.marcosflobo.storage.dto.Song;
 public interface SongDatastore {
 
   void save(Song song);
-  Song find(Song song);
+  Song findByTargetDate(String targetDate);
 }

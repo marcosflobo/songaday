@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class UseCaseSaveSongTest {
+class UseCaseSaveSongTest {
 
   private static UseCaseSaveSong useCaseSaveSong;
   private static SongDatastore songDatastore;
@@ -37,7 +37,7 @@ public class UseCaseSaveSongTest {
     useCaseSaveSong.store();
 
     // THEN: It's stored
-    Song foundSong = songDatastore.find(song);
+    Song foundSong = songDatastore.findByTargetDate(song.getTargetDate());
 
     Assertions.assertEquals(song.getUrl(), foundSong.getUrl());
   }

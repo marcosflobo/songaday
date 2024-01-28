@@ -21,7 +21,7 @@ public class UseCaseSaveSong implements StoreSong {
   @Override
   public void store() {
 
-    Song song = mapperSongEntity.inputSonToSong(inputSong);
+    Song song = mapperSongEntity.inputSongToSong(inputSong);
     songDatastore.save(song);
   }
 

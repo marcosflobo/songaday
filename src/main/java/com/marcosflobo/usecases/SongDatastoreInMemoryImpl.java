@@ -20,7 +20,7 @@ public class SongDatastoreInMemoryImpl implements SongDatastore{
   }
 
   @Override
-  public Song find(Song song) {
-    return store.get(song.getTargetDate());
+  public Song findByTargetDate(String targetDate) {
+    return store.get(targetDate);
   }
 }

@@ -1,4 +1,4 @@
-package com.marcosflobo.storage.dto;
+package com.marcosflobo.entity;
 
 import lombok.Data;
 

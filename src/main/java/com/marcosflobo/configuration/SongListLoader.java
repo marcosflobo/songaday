@@ -2,7 +2,7 @@ package com.marcosflobo.configuration;
 
 import com.marcosflobo.inputsong.FtpService;
 import com.marcosflobo.storage.SongMemoryDatabase;
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.Song;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import jakarta.inject.Singleton;

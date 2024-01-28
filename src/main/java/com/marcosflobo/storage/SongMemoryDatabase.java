@@ -1,6 +1,6 @@
 package com.marcosflobo.storage;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.Song;
 import jakarta.inject.Singleton;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;

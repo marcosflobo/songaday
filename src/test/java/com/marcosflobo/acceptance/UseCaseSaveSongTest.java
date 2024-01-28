@@ -1,10 +1,10 @@
 package com.marcosflobo.acceptance;
 
-import com.marcosflobo.storage.dto.Song;
-import com.marcosflobo.usecases.InputSong;
-import com.marcosflobo.usecases.SongDatastore;
-import com.marcosflobo.usecases.SongDatastoreInMemoryImpl;
-import com.marcosflobo.usecases.UseCaseSaveSong;
+import com.marcosflobo.entity.Song;
+import com.marcosflobo.usecases.savesong.InputSong;
+import com.marcosflobo.storage.SongDatastore;
+import com.marcosflobo.storage.inmemory.SongDatastoreInMemoryImpl;
+import com.marcosflobo.usecases.savesong.UseCaseSaveSong;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

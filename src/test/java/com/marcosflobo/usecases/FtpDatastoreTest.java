@@ -2,6 +2,8 @@ package com.marcosflobo.usecases;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.marcosflobo.storage.ftp.FtpDatastore;
+import com.marcosflobo.storage.ftp.SongFtpDto;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

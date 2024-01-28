@@ -1,11 +1,13 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.usecases.savesong;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.MapperSongEntity;
+import com.marcosflobo.entity.Song;
+import com.marcosflobo.storage.SongDatastore;
 import jakarta.inject.Singleton;
 import lombok.Setter;
 
 @Singleton
-public class UseCaseSaveSong implements StoreSong {
+public class UseCaseSaveSong implements SaveSong {
 
   @Setter
   private InputSong inputSong;

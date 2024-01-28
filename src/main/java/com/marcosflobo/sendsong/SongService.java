@@ -4,7 +4,7 @@ import static com.marcosflobo.Utils.getDateToday;
 
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
 import com.marcosflobo.storage.SongMemoryDatabase;
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.Song;
 import jakarta.inject.Singleton;
 
 @Singleton

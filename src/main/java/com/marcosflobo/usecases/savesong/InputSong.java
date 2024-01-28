@@ -1,4 +1,4 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.usecases.savesong;
 
 import lombok.Data;
 

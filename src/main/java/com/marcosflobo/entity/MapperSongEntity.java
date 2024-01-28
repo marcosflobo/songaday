@@ -1,6 +1,7 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.entity;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.usecases.savesong.InputSong;
+import com.marcosflobo.storage.ftp.SongFtpDto;
 import jakarta.inject.Singleton;
 
 @Singleton

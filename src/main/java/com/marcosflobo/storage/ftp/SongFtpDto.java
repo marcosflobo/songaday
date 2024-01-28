@@ -1,4 +1,4 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.storage.ftp;
 
 import lombok.Data;
 

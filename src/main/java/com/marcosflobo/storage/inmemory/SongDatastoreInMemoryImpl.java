@@ -1,11 +1,12 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.storage.inmemory;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.Song;
+import com.marcosflobo.storage.SongDatastore;
 import jakarta.inject.Singleton;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
-public class SongDatastoreInMemoryImpl implements SongDatastore{
+public class SongDatastoreInMemoryImpl implements SongDatastore {
 
   private final ConcurrentHashMap<String, Song> store;
 

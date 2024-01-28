@@ -1,11 +1,13 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.storage.ftp;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.MapperSongEntity;
+import com.marcosflobo.entity.Song;
+import com.marcosflobo.storage.SongDatastore;
 import jakarta.inject.Singleton;
 import java.util.Map;
 
 @Singleton
-public class SongDatastoreFtpFileImpl implements SongDatastore{
+public class SongDatastoreFtpFileImpl implements SongDatastore {
 
   private final FtpDatastore ftpDatastore;
   private final MapperSongEntity mapperSongEntity;

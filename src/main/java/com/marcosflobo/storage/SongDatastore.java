@@ -1,6 +1,6 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.storage;
 
-import com.marcosflobo.storage.dto.Song;
+import com.marcosflobo.entity.Song;
 
 public interface SongDatastore {
 

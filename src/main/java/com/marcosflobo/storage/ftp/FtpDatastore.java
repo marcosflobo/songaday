@@ -1,4 +1,4 @@
-package com.marcosflobo.usecases;
+package com.marcosflobo.storage.ftp;
 
 import io.micronaut.context.annotation.Property;
 import jakarta.inject.Singleton;

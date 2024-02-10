@@ -2,7 +2,7 @@ package com.marcosflobo.acceptance;
 
 import com.marcosflobo.entity.Song;
 import com.marcosflobo.usecases.savesong.InputSong;
-import com.marcosflobo.storage.ftp.SongDatastore;
+import com.marcosflobo.storage.SongDatastore;
 import com.marcosflobo.storage.inmemory.SongDatastoreInMemoryImpl;
 import com.marcosflobo.usecases.savesong.UseCaseSaveSong;
 import org.junit.jupiter.api.Assertions;

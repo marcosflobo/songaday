@@ -2,7 +2,7 @@ package com.marcosflobo.usecases.savesong;
 
 import com.marcosflobo.entity.MapperSongEntity;
 import com.marcosflobo.entity.Song;
-import com.marcosflobo.storage.ftp.SongDatastore;
+import com.marcosflobo.storage.SongDatastore;
 import jakarta.inject.Singleton;
 import lombok.Setter;
 

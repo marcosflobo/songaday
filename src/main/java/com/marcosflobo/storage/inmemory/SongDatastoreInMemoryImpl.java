@@ -1,7 +1,7 @@
 package com.marcosflobo.storage.inmemory;
 
 import com.marcosflobo.entity.Song;
-import com.marcosflobo.storage.ftp.SongDatastore;
+import com.marcosflobo.storage.SongDatastore;
 import jakarta.inject.Singleton;
 import java.util.concurrent.ConcurrentHashMap;
 

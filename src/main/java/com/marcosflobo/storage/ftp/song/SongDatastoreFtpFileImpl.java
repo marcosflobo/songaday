@@ -2,7 +2,7 @@ package com.marcosflobo.storage.ftp.song;
 
 import com.marcosflobo.entity.MapperSongEntity;
 import com.marcosflobo.entity.Song;
-import com.marcosflobo.storage.ftp.SongDatastore;
+import com.marcosflobo.storage.SongDatastore;
 import com.marcosflobo.storage.ftp.FtpStoreClient;
 import com.marcosflobo.storage.ftp.dto.SongFtpDto;
 import jakarta.inject.Singleton;

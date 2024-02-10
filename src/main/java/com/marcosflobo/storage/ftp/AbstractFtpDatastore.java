@@ -46,7 +46,7 @@ public abstract class AbstractFtpDatastore implements FtpDatastore {
       ftpClient.storeFile(filePath, byteArrayInputStream);
 
       byteArrayInputStream.close();
-      //disconnect();
+      disconnect();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -66,7 +66,7 @@ public abstract class AbstractFtpDatastore implements FtpDatastore {
         log.info("The file '{}' was not found in the FTP server", filePath);
       }
 
-      //disconnect();
+      disconnect();
 
       return bufferedReader;
     } catch (IOException e) {

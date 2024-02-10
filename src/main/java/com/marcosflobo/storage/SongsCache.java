@@ -9,11 +9,11 @@ import lombok.Setter;
 @Singleton
 @Getter
 @Setter
-public class SongMemoryDatabase {
+public class SongsCache {
 
   private ConcurrentHashMap<String, Song> memory;
 
-  public SongMemoryDatabase() {
+  public SongsCache() {
     this.memory = new ConcurrentHashMap<>();
   }
 

@@ -1,8 +1,6 @@
 package com.marcosflobo.applicationeventlistener;
 
-import com.marcosflobo.inputsong.FtpService;
-import com.marcosflobo.storage.SongMemoryDatabase;
-import com.marcosflobo.entity.Song;
+import com.marcosflobo.usecases.loadsongs.UseCaseLoadSongs;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import jakarta.inject.Singleton;
@@ -12,27 +10,16 @@ import lombok.extern.slf4j.Slf4j;
 @Singleton
 public class SongsLoaderApplicationEventListener implements ApplicationEventListener<StartupEvent> {
 
-  private final FtpService ftpService;
-  private final SongMemoryDatabase songMemoryDatabase;
+  private final UseCaseLoadSongs useLoadSongs;
 
-  public SongsLoaderApplicationEventListener(final FtpService ftpService, SongMemoryDatabase songMemoryDatabase) {
-    this.ftpService = ftpService;
-    this.songMemoryDatabase = songMemoryDatabase;
+  public SongsLoaderApplicationEventListener(final UseCaseLoadSongs useLoadSongs) {
+    this.useLoadSongs = useLoadSongs;
   }
 
   @Override
   public void onApplicationEvent(StartupEvent event) {
 
-    for (String s : ftpService.getCsv()) {
-      String[] split = s.split(",");
-      Song song = new Song();
-      song.setTargetDate(split[0]);
-      song.setUrl(split[1]);
-
-      log.info("Adding song {} to database", song);
-      songMemoryDatabase.add(song);
-    }
-
+    useLoadSongs.loadAll();
   }
 
   @Override

@@ -1,20 +1,15 @@
-package com.marcosflobo.storage.ftp.user;
+package com.marcosflobo.storage.ftp.song;
 
-import com.marcosflobo.entity.TelegramUser;
 import com.marcosflobo.storage.ftp.AbstractFtpDatastore;
 import io.micronaut.context.annotation.Property;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
-import lombok.Setter;
 
-@Named("ftpDatastoreUser")
-@Setter
+@Named("ftpDatastoreSong")
 @Singleton
-public class FtpDatastoreUser extends AbstractFtpDatastore {
+public class FtpDatastoreSong extends AbstractFtpDatastore {
 
-  private TelegramUser user;
-
-  @Property(name = "ftp.users.filePath")
+  @Property(name = "ftp.filePath")
   private String filePath;
 
   @Override

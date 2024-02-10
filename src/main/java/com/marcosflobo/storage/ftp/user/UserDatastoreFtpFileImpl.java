@@ -5,6 +5,7 @@ import com.marcosflobo.storage.UserDatastore;
 import com.marcosflobo.storage.ftp.FtpDatastore;
 import com.marcosflobo.storage.ftp.dto.TelegramUserFtpDto;
 import com.marcosflobo.storage.ftp.mapper.TelegramUserFtpDtoMapper;
+import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -21,7 +22,7 @@ public class UserDatastoreFtpFileImpl implements UserDatastore {
   private final FtpDatastore ftpDatastore;
   private final TelegramUserFtpDtoMapper telegramUserFtpDtoMapper;
 
-  public UserDatastoreFtpFileImpl(FtpDatastore ftpDatastore) {
+  public UserDatastoreFtpFileImpl(@Named("ftpDatastoreUser") FtpDatastore ftpDatastore) {
     this.ftpDatastore = ftpDatastore;
     telegramUserFtpDtoMapper = new TelegramUserFtpDtoMapper();
   }

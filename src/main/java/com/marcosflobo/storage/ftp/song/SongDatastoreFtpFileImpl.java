@@ -6,8 +6,10 @@ import com.marcosflobo.storage.SongDatastore;
 import com.marcosflobo.storage.ftp.FtpStoreClient;
 import com.marcosflobo.storage.ftp.dto.SongFtpDto;
 import jakarta.inject.Singleton;
+import java.util.List;
 import java.util.Map;
 
+// TODO: Pending to implement to store the songs received from a Controller
 @Singleton
 public class SongDatastoreFtpFileImpl implements SongDatastore {
 
@@ -35,6 +37,11 @@ public class SongDatastoreFtpFileImpl implements SongDatastore {
     if (songs.containsKey(targetDate)) {
       return mapperSongEntity.songFtpDtoToSong(songs.get(targetDate));
     }
+    return null;
+  }
+
+  @Override
+  public List<Song> findAll() {
     return null;
   }
 }

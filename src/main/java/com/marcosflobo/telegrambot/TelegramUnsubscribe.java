@@ -1,7 +1,7 @@
 package com.marcosflobo.telegrambot;
 
-import com.marcosflobo.storage.UsersService;
-import com.marcosflobo.storage.mysql.UserMysqlRepository;
+import com.marcosflobo.sendsong.TelegramLanguageMessages;
+import com.marcosflobo.usecases.unsubscribetelegramuser.UseCaseUnSubscribeTelegramUser;
 import jakarta.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,19 +15,23 @@ import org.telegram.telegrambots.meta.api.objects.User;
 public class TelegramUnsubscribe implements TelegramCommand{
 
   private User user;
-  private final UsersService usersService;
-  private final UserMysqlRepository userMysqlRepository;
+  private final UseCaseUnSubscribeTelegramUser useCaseUnSubscribeTelegramUser;
+  private final TelegramLanguageMessages telegramLanguageMessages;
 
-  public TelegramUnsubscribe(UsersService usersService, UserMysqlRepository userMysqlRepository) {
-    this.usersService = usersService;
-    this.userMysqlRepository = userMysqlRepository;
+  public TelegramUnsubscribe(UseCaseUnSubscribeTelegramUser useCaseUnSubscribeTelegramUser,
+      TelegramLanguageMessages telegramLanguageMessages) {
+    this.useCaseUnSubscribeTelegramUser = useCaseUnSubscribeTelegramUser;
+    this.telegramLanguageMessages = telegramLanguageMessages;
   }
 
   @Override
   public void execute() {
 
-    Long userId = user.getId();
-    usersService.delete(userId);
-    userMysqlRepository.deleteByTelegramUserId(userId);
+    useCaseUnSubscribeTelegramUser.unsubscribe(user);
+  }
+
+  @Override
+  public String getMessage() {
+    return telegramLanguageMessages.userUnSubscribed(user);
   }
 }

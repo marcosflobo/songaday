@@ -1,4 +1,4 @@
-package com.marcosflobo.storage;
+package com.marcosflobo.storage.ftp;
 
 import com.marcosflobo.entity.Song;
 

@@ -1,6 +1,5 @@
-package com.marcosflobo.configuration;
+package com.marcosflobo.applicationeventlistener;
 
-import io.micronaut.context.annotation.Property;
 import io.micronaut.context.event.ApplicationEventListener;
 import io.micronaut.context.event.StartupEvent;
 import java.util.List;
@@ -13,12 +12,10 @@ import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @Slf4j
-public class TelegramRegistryService implements ApplicationEventListener<StartupEvent> {
+public class BotTelegramApplicationEventListener implements ApplicationEventListener<StartupEvent> {
 
   @Inject
   List<LongPollingBot> longPollingBots;
-  @Property(name = "datasources.external.url")
-  private String databaseHost;
 
   @Override
   public void onApplicationEvent(StartupEvent event) {
@@ -26,7 +23,6 @@ public class TelegramRegistryService implements ApplicationEventListener<Startup
     try {
       botsApi = new TelegramBotsApi(DefaultBotSession.class);
 
-      log.info("Database connection string {}", databaseHost);
       log.info("Registering Longpolling Bots");
       for (LongPollingBot bot : longPollingBots) {
         try {

@@ -27,24 +27,13 @@ dependencies {
     // https://mvnrepository.com/artifact/org.telegram/telegrambots
     implementation ("org.telegram:telegrambots:6.8.0")
 
-    // redis
-    implementation("io.micronaut.redis:micronaut-redis-lettuce")
-
     // FTP & CSV
     // https://mvnrepository.com/artifact/commons-net/commons-net
     implementation 'commons-net:commons-net:3.10.0'
     implementation 'com.opencsv:opencsv:5.9'
 
-    // Mysql
-    annotationProcessor("io.micronaut.data:micronaut-data-processor")
-    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
-    implementation("io.micronaut.data:micronaut-data-jdbc")
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
-    implementation("io.micronaut.validation:micronaut-validation")
-    implementation("jakarta.validation:jakarta.validation-api")
-    runtimeOnly("mysql:mysql-connector-java")
-    runtimeOnly("org.yaml:snakeyaml")
-
+    // test
+    testImplementation "org.testcontainers:testcontainers:1.19.4"
 
 }
 

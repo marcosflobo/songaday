@@ -1,4 +1,4 @@
-package com.marcosflobo.storage.ftp;
+package com.marcosflobo.storage.ftp.dto;
 
 import lombok.Data;
 

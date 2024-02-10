@@ -1,4 +1,4 @@
-package com.marcosflobo.configuration;
+package com.marcosflobo.applicationeventlistener;
 
 import com.marcosflobo.inputsong.FtpService;
 import com.marcosflobo.storage.SongMemoryDatabase;
@@ -10,12 +10,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Singleton
-public class SongListLoader implements ApplicationEventListener<StartupEvent> {
+public class SongsLoaderApplicationEventListener implements ApplicationEventListener<StartupEvent> {
 
   private final FtpService ftpService;
   private final SongMemoryDatabase songMemoryDatabase;
 
-  public SongListLoader(final FtpService ftpService, SongMemoryDatabase songMemoryDatabase) {
+  public SongsLoaderApplicationEventListener(final FtpService ftpService, SongMemoryDatabase songMemoryDatabase) {
     this.ftpService = ftpService;
     this.songMemoryDatabase = songMemoryDatabase;
   }

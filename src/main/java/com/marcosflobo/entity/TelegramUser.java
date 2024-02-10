@@ -1,12 +1,11 @@
-package com.marcosflobo.storage.mysql.dto;
+package com.marcosflobo.entity;
 
-import io.micronaut.serde.annotation.Serdeable;
 import lombok.Data;
 
-@Serdeable
 @Data
-public class TelegramUserData {
+public class TelegramUser {
 
+  private Long id;
   private Boolean isBot;
   private String languageCode;
   private Boolean canJoinGroups;

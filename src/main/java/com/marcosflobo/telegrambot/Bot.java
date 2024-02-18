@@ -3,10 +3,6 @@ package com.marcosflobo.telegrambot;
 import com.marcosflobo.sendsong.SongService;
 import com.marcosflobo.sendsong.TelegramLanguageMessages;
 import com.marcosflobo.sendsong.exception.NoSongForTodayException;
-import com.marcosflobo.storage.UsersService;
-import com.marcosflobo.storage.mysql.UserMysqlRepository;
-import com.marcosflobo.storage.mysql.dto.TelegramUser;
-import com.marcosflobo.storage.mysql.dto.TelegramUserDataMapper;
 import io.micronaut.context.annotation.Property;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
@@ -25,23 +21,16 @@ public class Bot extends TelegramLongPollingBot {
 
   @Property(name = "telegram.botusername")
   private String botUserName;
-  private final UsersService usersService;
   private final SongService songService;
   private final TelegramLanguageMessages telegramLanguageMessages;
-  private final UserMysqlRepository userMysqlRepository;
-  private final TelegramUserDataMapper telegramUserDataMapper;
   private final TelegramStartSubscribe startCommand;
   private final TelegramUnsubscribe unsubscribeCommand;
-  public Bot(UsersService usersService,
-      SongService songService,
-      TelegramLanguageMessages telegramLanguageMessages, UserMysqlRepository userMysqlRepository,
-      TelegramUserDataMapper telegramUserDataMapper, TelegramStartSubscribe startCommand,
+  public Bot(SongService songService,
+      TelegramLanguageMessages telegramLanguageMessages,
+      TelegramStartSubscribe startCommand,
       TelegramUnsubscribe unsubscribeCommand) {
-    this.usersService = usersService;
     this.telegramLanguageMessages = telegramLanguageMessages;
     this.songService = songService;
-    this.userMysqlRepository = userMysqlRepository;
-    this.telegramUserDataMapper = telegramUserDataMapper;
     this.startCommand = startCommand;
     this.unsubscribeCommand = unsubscribeCommand;
   }
@@ -74,7 +63,7 @@ public class Bot extends TelegramLongPollingBot {
           log.info("Command /subscribe by user '{}'", userId);
           startCommand.setUser(user);
           startCommand.execute();
-          sendGeneralMessage(userId, telegramLanguageMessages.userSubscribed(user));
+          sendGeneralMessage(userId, startCommand.getMessage());
 
           // Send today's song
           try {
@@ -86,11 +75,11 @@ public class Bot extends TelegramLongPollingBot {
         } else if (messageText.equals("/unsubscribe")) {
           log.info("Command /unsubscribe by user '{}'", userId);
           // send farewell message
-          sendGeneralMessage(userId, telegramLanguageMessages.userUnSubscribed(user));
 
           // remove user from database
           unsubscribeCommand.setUser(user);
           unsubscribeCommand.execute();
+          sendGeneralMessage(userId, unsubscribeCommand.getMessage());
         }
       } else {
         // Action not supported
@@ -118,21 +107,6 @@ public class Bot extends TelegramLongPollingBot {
     SendMessage message = SendMessage.builder()
         .chatId(userId) //Who are we sending a message to
         .text(telegramLanguageMessages.dailySong() + songUrl)
-        .build();    //Message content
-    try {
-      log.info("Sending song to '{}'...", userId);
-      execute(message);                        //Actually sending the message
-      log.info("Message sent to '{}'", userId);
-    } catch (TelegramApiException e) {      //Any error will be printed here
-      log.error("Error sending message to user '{}'. Exception: {}", userId, e.getMessage());
-    }
-  }
-  public void sendSong(TelegramUser telegramUser, String songUrl) {
-
-    Long userId = telegramUser.getTelegramUserId();
-    SendMessage message = SendMessage.builder()
-        .chatId(userId) //Who are we sending a message to
-        .text(telegramLanguageMessages.dailySong(telegramUser.getTelegramUserData().getLanguageCode()) + songUrl)
         .build();    //Message content
     try {
       log.info("Sending song to '{}'...", userId);
